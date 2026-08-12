@@ -1,0 +1,7 @@
+-r api/requirements.txt
+-r consumer/requirements.txt
+-r producer/requirements.txt
+pytest==9.1.1
+fakeredis==2.37.0
+httpx
+ruff

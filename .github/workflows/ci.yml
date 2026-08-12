@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Lint
+        run: ruff check .
+      - name: Test
+        run: pytest tests/ -v
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [producer, consumer, api]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ${{ matrix.service }} image
+        run: |
+          docker build -f ${{ matrix.service }}/Dockerfile \
+            -t market-data-stream-${{ matrix.service }}:${{ github.sha }} .
+      # Pushing to a registry and deploying (e.g. to Cloud Run, or restarting
+      # the always-on VM) needs credentials that only make sense once this
+      # is running under your own GitHub repo and cloud account - see
+      # infra/deploy/ for the scripts, added here as a follow-on job once
+      # GCP_PROJECT_ID / GCP_SA_KEY / REDIS_URL exist as repo secrets.
