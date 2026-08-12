@@ -26,7 +26,7 @@ services:
       dockerfile: producer/Dockerfile
     environment:
       REDPANDA_BOOTSTRAP_SERVERS: redpanda:9092
-      SYMBOLS: btcusdt,ethusdt,solusdt
+      SYMBOLS: BTC-USD,ETH-USD,SOL-USD
     depends_on:
       redpanda:
         condition: service_healthy
