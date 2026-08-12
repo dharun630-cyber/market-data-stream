@@ -10,6 +10,13 @@ Everything below is written with that emphasis - what the components are
 is the easy part; why they're shaped this way is what this README spends
 its words on.
 
+## Live demo
+
+- **API:** https://market-data-api-956569311331.us-central1.run.app/docs
+- **Try it:** send header `X-API-Key: mykey` with any request, e.g.
+  `curl -H "X-API-Key: mykey" https://market-data-api-956569311331.us-central1.run.app/v1/symbols/BTC-USD/latest`
+- Live trades are pulled continuously from Coinbase's public feed, aggregated on an always-on VM, and served through the API above.
+
 ## Architecture
 
 ```
